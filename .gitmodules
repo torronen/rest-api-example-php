@@ -1,0 +1,3 @@
+[submodule "rest-php-lib"]
+	path = rest-php-lib
+	url = git@github.com:Paybyway/rest-php-lib.git
