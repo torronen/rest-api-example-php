@@ -1,0 +1,23 @@
+<?php
+
+namespace Paybyway;
+
+class PaybywayProduct
+{
+  private $fields;
+  public function __construct(array $fields)
+  {
+    $this->fields['id'] = $fields['id'];
+    $this->fields['title'] = $fields['title'];
+    $this->fields['count'] = $fields['count'];
+    $this->fields['pretax_price'] = $fields['pretax_price'];
+    $this->fields['tax'] = $fields['tax'];
+    $this->fields['price'] = $fields['price'];
+    $this->fields['type'] = $fields['type'];
+  }
+
+  public function getProductDetails()
+  {
+    return $this->fields;
+  }
+}

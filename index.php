@@ -12,11 +12,11 @@ define("CHARGE_FAILED", 001);
 /*
   Include the PHP library
 */
-  include_once('rest-php-lib/lib/paybyway_loader.php');
+  include_once('lib/paybyway_loader.php');
 
 /*
   Autoloader setup for Composer
-  include_once('rest-php-lib/vendor/autoload.php');
+  include_once('vendor/autoload.php');
 */
 
 /*
