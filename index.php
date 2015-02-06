@@ -298,6 +298,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check')
   			{
   				$('.btn').removeAttr("disabled");
   				$("#payment-result").html("<p class=\"bg-success\">Payment successful!</p>");
+          $("#the-form")[0].reset();
   				clearTimeout(paymentTimer);
   			} 
 
