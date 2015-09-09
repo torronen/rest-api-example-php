@@ -13,10 +13,13 @@ class PaybywayCharge extends Paybyway
     $this->fields['amount'] = $fields['amount'];
     $this->fields['order_number'] = $fields['order_number'];
     $this->fields['currency'] = $fields['currency'];
-    $this->fields['merchant_id'] = $fields['merchant_id'];
+    $this->fields['api_key'] = $fields['api_key'];
 
-    if(isset($fields['email']))
-      $this->fields['email'] = $fields['email'];
+    if(isset($fields['register_card_token']))
+    	$this->fields['register_card_token'] = $fields['register_card_token'];
+    
+    if(isset($fields['card_token']))
+    	$this->fields['card_token'] = $fields['card_token'];
 
     $this->customer = null;
     $this->products = array();
@@ -27,7 +30,7 @@ class PaybywayCharge extends Paybyway
     $this->customer = $customer;
   }
 
-  public function addProduct($product)
+  public function setProduct($product)
   {
     $this->products[] = $product;
   }

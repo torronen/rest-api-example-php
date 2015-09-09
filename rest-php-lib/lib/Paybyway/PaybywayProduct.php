@@ -14,6 +14,12 @@ class PaybywayProduct
     $this->fields['tax'] = $fields['tax'];
     $this->fields['price'] = $fields['price'];
     $this->fields['type'] = $fields['type'];
+
+    if(isset($fields['merchant_id']))
+    	$this->fields['merchant_id'] = $fields['merchant_id'];
+    
+    if(isset($fields['cp']))
+    	$this->fields['cp'] = $fields['cp'];
   }
 
   public function getProductDetails()

@@ -97,7 +97,6 @@ Paybyway.prototype.charge = function(token, amount, currency, card, exp_month, e
 	this.complete(token);
 
 	var uri = this.brokerUriPrefix + "pbwapi/charge";
-	var pbwClientVersionInfo = "0.0.0";
 	var params = [];
 	params.push(
 		"token="+token,
@@ -106,8 +105,7 @@ Paybyway.prototype.charge = function(token, amount, currency, card, exp_month, e
 		"&card="+card,
 		"&exp_month="+exp_month,
 		"&exp_year="+exp_year,
-		"&security_code="+security_code,
-		"&version="+encodeURIComponent(pbwClientVersionInfo));
+		"&security_code="+security_code);
 	var data = params.join("");
 
 	return this.paymentRequest(token, uri, data);

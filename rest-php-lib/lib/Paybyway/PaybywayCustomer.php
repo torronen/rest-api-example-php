@@ -14,9 +14,6 @@ class PaybywayCustomer
     if(isset($fields['lastname']))
       $this->fields['lastname'] = $fields['lastname'];
 
-    if(isset($fields['ssn']))
-      $this->fields['ssn'] = $fields['ssn'];
-
     if(isset($fields['email']))
       $this->fields['email'] = $fields['email'];
 
