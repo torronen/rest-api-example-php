@@ -2,7 +2,6 @@
     "name": "paybyway/paybyway",
     "type": "library",
     "description": "Paybyway PHP Library",
-    "version": "2.0.0",
     "keywords": ["payment", "maksukaista", "paybyway"],
     "homepage": "https://www.paybyway.com",
     "authors": [

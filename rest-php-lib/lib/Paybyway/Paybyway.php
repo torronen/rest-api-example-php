@@ -12,7 +12,7 @@ class Paybyway
 
 	const API_URL = 'https://www.paybyway.com/pbwapi';
 
-	public function __construct($api_key, $private_key, $version = 'w2.1', PaybywayConnector $connector = null)
+	public function __construct($api_key, $private_key, $version = 'w3', PaybywayConnector $connector = null)
 	{
 		$this->api_key = $api_key;
 		$this->private_key = $private_key;
@@ -37,12 +37,17 @@ class Paybyway
 		$this->charge->setProduct(new PaybywayProduct($fields));
 	}
 
+	public function addPaymentMethod(array $fields)
+	{
+		$this->charge->setPaymentMethod(new PaybywayPaymentMethod($fields));
+	}
+
 	public function createCharge()
 	{
 		$payment = $this->charge->toArray();
 		
 		$payment['version'] = $this->version;
-		$payment['authcode'] = $this->calcAuthcode($this->api_key.'|'.$payment['amount'].'|'.$payment['currency']);
+		$payment['authcode'] = $this->calcAuthcode($this->api_key.'|'.$payment['order_number']);
 
 		$result = $this->connector->request("auth_payment", $payment);
 
@@ -60,7 +65,7 @@ class Paybyway
 		$payment = $this->charge->toArray();
 
 		$payment['version'] = $this->version;
-		$payment['authcode'] = $this->calcAuthcode($this->api_key.'|'.$payment['amount'].'|'.$payment['currency'].'|'.$payment['card_token']);
+		$payment['authcode'] = $this->calcAuthcode($this->api_key.'|'.$payment['order_number'].'|'.$payment['card_token']);
 
 		$result = $this->connector->request("charge_card_token", $payment);
 
@@ -170,7 +175,33 @@ class Paybyway
 				return $json;
 		}
 
-		throw new PaybywayException("Paybyway :: getCardToken - response not valid JSON", 2);	
+		throw new PaybywayException("Paybyway :: deleteCardToken - response not valid JSON", 2);	
+	}
+
+	// if payment response was valid, returns the return code, otherwise throw an error.
+	public function checkReturn($return_data)
+	{
+		if(array_key_exists('RETURN_CODE', $return_data) && array_key_exists('ORDER_NUMBER', $return_data) && array_key_exists('AUTHCODE', $return_data))
+		{
+			$mac_input = $return_data['RETURN_CODE'].'|'.$return_data['ORDER_NUMBER'];
+			if(array_key_exists('SETTLED', $return_data))
+				$mac_input .= '|'.$return_data['SETTLED'];
+			if(array_key_exists('CONTACT_ID', $return_data))
+				$mac_input .= '|'.$return_data['CONTACT_ID'];
+			if(array_key_exists('INCIDENT_ID', $return_data))
+				$mac_input .= '|'.$return_data['INCIDENT_ID'];
+
+			if($return_data['AUTHCODE'] == $this->calcAuthcode($mac_input))
+			{
+				return (object)$return_data;
+			}
+			else
+			{
+				throw new PaybywayException("Paybyway :: checkReturn failed - MAC authentication failed", 4);
+			}
+		}
+
+		throw new PaybywayException("Paybyway :: checkReturn failed - not enough data given", 5);
 	}
 
 	private function calcAuthcode($input)

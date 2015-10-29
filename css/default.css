@@ -1,0 +1,106 @@
+.bank-button {
+	background-image: url(../images/bank-buttons.png);
+	background-color: #fff;
+	background-position: 0px 0px;
+	width: 132.5px;
+	height: 70px;
+	border-radius: 2px;
+	float: left;
+	margin: 0 6px 6px 0;
+	cursor: pointer;
+}
+
+.bank-button:hover
+{
+	border-color: rgba(233, 105, 10, 0.4);
+}
+.bank-button.disaled:hover
+{
+	cursor: pointer;
+}
+
+#payment-box
+{
+	padding-bottom: 25px;
+}
+
+#maksukaista-button-nordea,
+#maksukaista-button-nordea.disabled:hover {
+	background-position: 0px -70px;
+}
+#maksukaista-button-nordea.selected.disabled,
+#maksukaista-button-nordea:hover {
+	background-position: 0px 0px;
+}
+
+#maksukaista-button-op,
+#maksukaista-button-op.disabled:hover
+{
+	background-position: -140px -72px;  
+}
+#maksukaista-button-op.selected.disabled,
+#maksukaista-button-op:hover {
+	background-position: -140px -2px;
+}
+#maksukaista-button-danske,
+#maksukaista-button-danske.disabled:hover
+{
+	background-position: -560px -70px;
+}
+#maksukaista-button-danske.selected.disabled,
+#maksukaista-button-danske:hover {
+	background-position: -560px 0px;
+}
+#maksukaista-button-saastopankki,
+#maksukaista-button-saastopankki.disabled:hover { 
+	background-position: -980px -70px;
+}
+#maksukaista-button-saastopankki.selected.disabled,
+#maksukaista-button-saastopankki:hover {
+	background-position: -980px 0px;
+}
+#maksukaista-button-poppankki,
+#maksukaista-button-poppankki.disabled:hover
+{
+	background-position: -840px -70px;  
+}
+#maksukaista-button-poppankki.selected.disabled,
+#maksukaista-button-poppankki:hover {
+	background-position: -840px 0px;
+}
+#maksukaista-button-aktia,
+#maksukaista-button-aktia.disabled:hover
+{
+	background-position: -280px -70px;  
+}
+#maksukaista-button-aktia.selected.disabled,
+#maksukaista-button-aktia:hover {
+	background-position: -280px 0px;
+}
+#maksukaista-button-handelsbanken,
+#maksukaista-button-handelsbanken.disabled:hover
+{
+	background-position: -700px -70px;
+}
+#maksukaista-button-handelsbanken.selected.disabled,
+#maksukaista-button-handelsbanken:hover {
+	background-position: -700px 0px;
+}
+#maksukaista-button-spankki,
+#maksukaista-button-spankki.disabled:hover
+{
+	background-position: -1120px -70px;
+}
+#maksukaista-button-spankki.selected.disabled,
+#maksukaista-button-spankki:hover {
+	background-position: -1120px 0px;
+}
+
+#bank-buttons .disabled {
+	cursor: default;
+	opacity: 0.3;
+}
+
+#bank-buttons .disabled.selected {
+	opacity: 1;
+}

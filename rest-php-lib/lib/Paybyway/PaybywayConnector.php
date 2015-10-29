@@ -4,5 +4,5 @@ namespace Paybyway;
 
 interface PaybywayConnector
 {
-  public function request($url, $post_arr);
+	public function request($url, $post_arr);
 }
