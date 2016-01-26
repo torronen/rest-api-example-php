@@ -1,11 +1,4 @@
 <?php
-/*
-	Allow the requests to be sent outside of the current origin. This is needed because we want to send the credit card details straight to Paybyway API.
-*/
-Header('Access-Control-Allow-Origin', '*');
-Header('Access-Control-Allow-Methods', 'POST');
-Header("Access-Control-Allow-Headers", "X-Requested-With");
-
 date_default_timezone_set('Europe/Helsinki');
 
 /*
