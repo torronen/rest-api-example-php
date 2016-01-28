@@ -26,11 +26,9 @@ class PaybywayPaymentMethod
 			if(isset($fields['selected']) && is_array($fields['selected']))
 				$this->fields['selected'] = $fields['selected'];
 		}
-		else if($this->fields['type'] == "card")
-		{
-			if(isset($fields['register_card_token']))
-				$this->fields['register_card_token'] = $fields['register_card_token'];
-		}
+		
+		if(isset($fields['register_card_token']))
+			$this->fields['register_card_token'] = $fields['register_card_token'];
 	}
 
 	public function getPaymentMethod()
