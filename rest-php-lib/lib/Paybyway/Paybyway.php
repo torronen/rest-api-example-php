@@ -12,7 +12,7 @@ class Paybyway
 
 	const API_URL = 'https://www.paybyway.com/pbwapi';
 
-	public function __construct($api_key, $private_key, $version = 'w3', PaybywayConnector $connector = null)
+	public function __construct($api_key, $private_key, $version = 'w3.1', PaybywayConnector $connector = null)
 	{
 		$this->api_key = $api_key;
 		$this->private_key = $private_key;
@@ -78,14 +78,15 @@ class Paybyway
 		throw new PaybywayException("Paybyway :: chargeWithCardToken - response not valid JSON", 2);
 	}
 
-	public function checkStatus($token)
+	protected function checkStatus(array $params)
 	{
 		$post_arr = array(
 			'version' => $this->version,
-			'authcode' => $this->calcAuthcode($this->api_key.'|'.$token),
-			'token' => $token,
+			'authcode' => $this->calcAuthcode($this->api_key.'|'.reset($params)),
 			'api_key' => $this->api_key
-			);
+		);
+
+		$post_arr = array_merge($post_arr, $params);
 
 		$result = $this->connector->request("check_payment_status", $post_arr);
 
@@ -96,6 +97,21 @@ class Paybyway
 		}
 
 		throw new PaybywayException("Paybyway :: checkStatus - response not valid JSON", 2);
+		
+	}
+
+	public function checkStatusWithToken($token)
+	{
+		return $this->checkStatus(array(
+			'token' => $token
+		));
+	}
+
+	public function checkStatusWithOrderNumber($order_number)
+	{
+		return $this->checkStatus(array(
+			'order_number' => $order_number
+		));
 	}
 
 	public function settlePayment($order_number)

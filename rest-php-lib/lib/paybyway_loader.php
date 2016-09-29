@@ -11,6 +11,6 @@ include_once('Paybyway/PaybywayException.php');
 
 if (!function_exists('curl_init'))
 {
-	throw new PaybywayException('Curl not enabled, exiting');
+	throw new Paybyway\PaybywayException('Curl not enabled, exiting');
 	exit(0);
 }

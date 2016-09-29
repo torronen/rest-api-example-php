@@ -1,5 +1,5 @@
 <?php
-require '../vendor/autoload.php';
+require dirname(__FILE__).'/../vendor/autoload.php';
 
 class PaybywayTest extends PHPUnit_Framework_TestCase
 {
@@ -23,12 +23,12 @@ class PaybywayTest extends PHPUnit_Framework_TestCase
 			'order_number' => 'a',
 			'currency' => 'EUR',
 			'api_key' => 'TESTAPIKEY',
-			'version' => 'w3',
+			'version' => 'w3.1',
 			'authcode' => '23746DEF83C7EC93A1A6D9E03E569032804535230DC3DEDDF575699456C63BFF',
 			'payment_method' => array('type' => 'card')
 			))->once()->andReturn(json_encode($response));
 
-		$paybyway = new Paybyway\Paybyway('TESTAPIKEY', 'private_key', 'w3', $connector);
+		$paybyway = new Paybyway\Paybyway('TESTAPIKEY', 'private_key', 'w3.1', $connector);
 
 		$paybyway->addCharge(array(
 			'amount' => '100',
@@ -61,12 +61,12 @@ class PaybywayTest extends PHPUnit_Framework_TestCase
 			'order_number' => 'a',
 			'currency' => 'EUR',
 			'api_key' => 'TESTAPIKEY',
-			'version' => 'w3',
+			'version' => 'w3.1',
 			'authcode' => '23746DEF83C7EC93A1A6D9E03E569032804535230DC3DEDDF575699456C63BFF',
 			'payment_method' => array('type' => 'e-payment', 'return_url' => 'https://localhost/return', 'notify_url' => 'https://localhost/return')
 			))->once()->andReturn(json_encode($response));
 
-		$paybyway = new Paybyway\Paybyway('TESTAPIKEY', 'private_key', 'w3', $connector);
+		$paybyway = new Paybyway\Paybyway('TESTAPIKEY', 'private_key', 'w3.1', $connector);
 
 		$paybyway->addCharge(array(
 			'amount' => '100',
@@ -85,7 +85,7 @@ class PaybywayTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($request->type, 'e-payment');
 	}
 
-	public function testGetStatus()
+	public function testGetStatusWithToken()
 	{
 		$connector = \Mockery::mock('Paybyway\PaybywayConnector');
 
@@ -94,15 +94,37 @@ class PaybywayTest extends PHPUnit_Framework_TestCase
 		$response = json_encode($response);
 
 		$connector->shouldReceive("request")->with("check_payment_status", array(
-			'version' => 'w3',
+			'version' => 'w3.1',
 			'authcode' => 'B33468AA646E3835C40929AA3361A44F4923E95D90F84CB14CDF9C70507E4384',
 			'token' => $test_token,
 			'api_key' => 'TESTAPIKEY'
 			))->once()->andReturn($response);
 
-		$paybyway = new Paybyway\Paybyway('TESTAPIKEY', 'private_key', 'w3', $connector);
+		$paybyway = new Paybyway\Paybyway('TESTAPIKEY', 'private_key', 'w3.1', $connector);
 
-		$request = $paybyway->checkStatus($test_token);
+		$request = $paybyway->checkStatusWithToken($test_token);
+
+		$this->assertEquals($request->result, 0);
+	}
+
+	public function testGetStatusWithOrderNumber()
+	{
+		$connector = \Mockery::mock('Paybyway\PaybywayConnector');
+
+		$test_order_number = 'test_token';
+		$response = array('result' => 0);
+		$response = json_encode($response);
+
+		$connector->shouldReceive("request")->with("check_payment_status", array(
+			'version' => 'w3.1',
+			'authcode' => 'B33468AA646E3835C40929AA3361A44F4923E95D90F84CB14CDF9C70507E4384',
+			'order_number' => $test_order_number,
+			'api_key' => 'TESTAPIKEY'
+			))->once()->andReturn($response);
+
+		$paybyway = new Paybyway\Paybyway('TESTAPIKEY', 'private_key', 'w3.1', $connector);
+
+		$request = $paybyway->checkStatusWithOrderNumber($test_order_number);
 
 		$this->assertEquals($request->result, 0);
 	}
@@ -111,7 +133,7 @@ class PaybywayTest extends PHPUnit_Framework_TestCase
 	{
 		$connector = \Mockery::mock('Paybyway\PaybywayConnector');
 
-		$paybyway = new Paybyway\Paybyway('TESTAPIKEY', 'private_key', 'w3', $connector);
+		$paybyway = new Paybyway\Paybyway('TESTAPIKEY', 'private_key', 'w3.1', $connector);
 		$paybyway->addCharge(array(
 			'amount' => '100',
 			'order_number' => 'a',
@@ -151,12 +173,12 @@ class PaybywayTest extends PHPUnit_Framework_TestCase
 			'order_number' => 'a',
 			'currency' => 'EUR',
 			'api_key' => 'TESTAPIKEY',
-			'version' => 'w3',
+			'version' => 'w3.1',
 			'card_token' => 'card_token',
 			'authcode' => 'AD8F8D0FB039C5685D54E9EC1DEEA2972C00C46F2ED4B260481BD225209C0982'
 			))->once()->andReturn(json_encode($response));
 
-		$paybyway = new Paybyway\Paybyway('TESTAPIKEY', 'private_key', 'w3', $connector);
+		$paybyway = new Paybyway\Paybyway('TESTAPIKEY', 'private_key', 'w3.1', $connector);
 
 		$paybyway->addCharge(array(
 			'amount' => '100',
@@ -177,13 +199,13 @@ class PaybywayTest extends PHPUnit_Framework_TestCase
 		$response = array('result' => 0);
 
 		$connector->shouldReceive("request")->with("capture", array(
-			'version' => 'w3',
+			'version' => 'w3.1',
 			'authcode' => '23746DEF83C7EC93A1A6D9E03E569032804535230DC3DEDDF575699456C63BFF',
 			'order_number' => 'a',
 			'api_key' => 'TESTAPIKEY'
 			))->once()->andReturn(json_encode($response));
 
-		$paybyway = new Paybyway\Paybyway('TESTAPIKEY', 'private_key', 'w3', $connector);
+		$paybyway = new Paybyway\Paybyway('TESTAPIKEY', 'private_key', 'w3.1', $connector);
 
 		$request = $paybyway->settlePayment('a');
 
@@ -197,13 +219,13 @@ class PaybywayTest extends PHPUnit_Framework_TestCase
 		$response = array('result' => 0);
 
 		$connector->shouldReceive("request")->with("cancel", array(
-			'version' => 'w3',
+			'version' => 'w3.1',
 			'authcode' => '23746DEF83C7EC93A1A6D9E03E569032804535230DC3DEDDF575699456C63BFF',
 			'order_number' => 'a',
 			'api_key' => 'TESTAPIKEY'
 			))->once()->andReturn(json_encode($response));
 
-		$paybyway = new Paybyway\Paybyway('TESTAPIKEY', 'private_key', 'w3', $connector);
+		$paybyway = new Paybyway\Paybyway('TESTAPIKEY', 'private_key', 'w3.1', $connector);
 
 		$request = $paybyway->cancelPayment('a');
 
@@ -227,13 +249,13 @@ class PaybywayTest extends PHPUnit_Framework_TestCase
 			);
 
 		$connector->shouldReceive("request")->with("get_card_token", array(
-			'version' => 'w3',
+			'version' => 'w3.1',
 			'authcode' => 'A2080435816D3C7C893E246B3651F12F80131984617468B0426DC6D9DD9ED0ED',
 			'card_token' => 'card_token',
 			'api_key' => 'TESTAPIKEY'
 			))->once()->andReturn(json_encode($response));
 
-		$paybyway = new Paybyway\Paybyway('TESTAPIKEY', 'private_key', 'w3', $connector);
+		$paybyway = new Paybyway\Paybyway('TESTAPIKEY', 'private_key', 'w3.1', $connector);
 
 		$request = $paybyway->getCardToken('card_token');
 		//returns object, response here is array
@@ -247,13 +269,13 @@ class PaybywayTest extends PHPUnit_Framework_TestCase
 		$response = array('result' => 0);
   
 		$connector->shouldReceive("request")->with("delete_card_token", array(
-			'version' => 'w3',
+			'version' => 'w3.1',
 			'authcode' => 'A2080435816D3C7C893E246B3651F12F80131984617468B0426DC6D9DD9ED0ED',
 			'card_token' => 'card_token',
 			'api_key' => 'TESTAPIKEY'
 			))->once()->andReturn(json_encode($response));
 
-		$paybyway = new Paybyway\Paybyway('TESTAPIKEY', 'private_key', 'w3', $connector);
+		$paybyway = new Paybyway\Paybyway('TESTAPIKEY', 'private_key', 'w3.1', $connector);
 
 		$request = $paybyway->deleteCardToken('card_token');
 

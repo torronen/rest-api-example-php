@@ -7,7 +7,7 @@ To install with composer, add following to composer.json and run ** composer upd
 
     {
       "require": {
-        "paybyway/paybyway": "^3.0.1"
+        "paybyway/paybyway": "^4.0.0"
       }
     }
 

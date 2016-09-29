@@ -8,7 +8,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check')
 	try
 	{
 		// Checks the Paybyway interface if there is a payment with given token created and in which state is it
-		$charge_result = $payment->checkStatus($_POST['token']);
+		$charge_result = $payment->checkStatusWithToken($_POST['token']);
 		if($charge_result->result == 0)
 		{
 			/* 
